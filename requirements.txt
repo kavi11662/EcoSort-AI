@@ -1,0 +1,7 @@
+tensorflow
+numpy
+flask
+pillow
+gunicorn
+streamlit
+gTTS
