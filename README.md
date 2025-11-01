@@ -52,13 +52,14 @@ streamlit run app.py
 
 EcoSort-AI/
 │
-├── app.py                # Streamlit main UI application  
-├── requirements.txt      # Python dependencies  
-├── model/                # Folder to store the trained model (.h5)  
+├── app.py                
+├── requirements.txt      
+├── model/               
 │   └── EcoSortAI_model.h5  
-├── dataset/              # Folder to store dataset images (optional local copy)  
+├── dataset/              
 │   ├── metal/  
 │   ├── organic/  
 │   ├── paper/  
 │   └── plastic/  
-└── README.md             # This file  
+└── README.md             
+
