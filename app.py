@@ -2,8 +2,6 @@ import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
-import cv2
-import tempfile
 from huggingface_hub import hf_hub_download
 
 # --- PAGE CONFIG ---
@@ -57,7 +55,9 @@ eco_tips = {
 # --- INPUT METHOD ---
 option = st.selectbox("Select input method:", ["Upload Image", "Live Camera Feed"])
 
-# --- IMAGE UPLOAD ---
+# ------------------------------
+# UPLOAD IMAGE
+# ------------------------------
 if option == "Upload Image" and model_loaded:
     uploaded_file = st.file_uploader("📸 Upload Waste Image", type=["jpg","jpeg","png"])
     if uploaded_file:
@@ -79,56 +79,32 @@ if option == "Upload Image" and model_loaded:
         </div>
         """, unsafe_allow_html=True)
 
-# --- LIVE CAMERA FEED ---
+# ------------------------------
+# LIVE CAMERA — FAST VERSION (NO OPENCV)
+# ------------------------------
 elif option == "Live Camera Feed" and model_loaded:
-    st.markdown("📷 Live waste detection active — click Start Camera!")
+    st.markdown("📷 Take a live picture to classify the waste")
 
-    if "camera_running" not in st.session_state:
-        st.session_state.camera_running = False
+    img_file = st.camera_input("Open Camera")
 
-    start_cam = st.button("Start Camera")
-    stop_cam = st.button("Stop Camera")
+    if img_file:
+        image = Image.open(img_file)
+        st.image(image, caption="Captured Image", use_container_width=True)
 
-    FRAME_WINDOW = st.empty()
-    RESULT_WINDOW = st.empty()
+        img_array = np.array(image.resize((150,150))) / 255.0
+        img_array = np.expand_dims(img_array, axis=0)
 
-    if start_cam:
-        st.session_state.camera_running = True
+        predictions = model.predict(img_array)
+        predicted_class = class_names[np.argmax(predictions)]
+        confidence = float(np.max(predictions) * 100)
 
-    if stop_cam:
-        st.session_state.camera_running = False
-        st.success("Camera stopped.")
-        FRAME_WINDOW.empty()
-        RESULT_WINDOW.empty()
-
-    if st.session_state.camera_running:
-        cap = cv2.VideoCapture(0)
-        last_pred = ""
-
-        while st.session_state.camera_running:
-            ret, frame = cap.read()
-            if not ret:
-                continue
-
-            frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            FRAME_WINDOW.image(frame_rgb, channels="RGB")
-
-            img_pred = cv2.resize(frame, (150,150)) / 255.0
-            img_pred = np.expand_dims(img_pred, axis=0)
-
-            predictions = model.predict(img_pred)
-            predicted_class = class_names[np.argmax(predictions)]
-            confidence = float(np.max(predictions) * 100)
-
-            RESULT_WINDOW.markdown(f"""
-            <div class="result-card">
-                <p class="predicted">✅ {predicted_class.upper()}</p>
-                <p class="confidence">Confidence: {confidence:.2f}%</p>
-                <p class="tip">{eco_tips[predicted_class]}</p>
-            </div>
-            """, unsafe_allow_html=True)
-
-        cap.release()
+        st.markdown(f"""
+        <div class="result-card">
+            <p class="predicted">✅ {predicted_class.upper()}</p>
+            <p class="confidence">Confidence: {confidence:.2f}%</p>
+            <p class="tip">{eco_tips[predicted_class]}</p>
+        </div>
+        """, unsafe_allow_html=True)
 
 # --- FOOTER ---
 st.markdown("""
