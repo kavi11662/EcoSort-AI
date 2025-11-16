@@ -1,7 +1,7 @@
-tensorflow
-numpy
-flask
-pillow
-gunicorn
 streamlit
-gTTS
+tensorflow
+opencv-python
+numpy
+pillow
+gtts
+reportlab
