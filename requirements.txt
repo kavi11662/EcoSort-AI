@@ -1,7 +1,7 @@
-streamlit
+streamlit==1.31.1
 tensorflow
 numpy
 pillow
-gtts
-huggingface_hub
 opencv-python-headless
+pyttsx3
+huggingface_hub
