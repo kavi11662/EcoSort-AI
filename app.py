@@ -109,8 +109,9 @@ elif option == "Live Camera Feed" and model_loaded:
 # --- FOOTER ---
 st.markdown("""
 <div class="footer">
-Developed by <b>Kavibharathi S</b> 
+Developed by <b>Kavibharathi S</b> <br>
 "Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱"
 </div>
 """, unsafe_allow_html=True)
+
 
