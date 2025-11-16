@@ -10,13 +10,42 @@ st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
 # --- UI STYLING ---
 st.markdown("""
 <style>
-[data-testid="stAppViewContainer"] {background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364); color: white;}
-.title {text-align:center; font-size:52px; font-weight:900; color:#76ff03; text-shadow:0px 0px 25px #76ff03,0px 0px 40px #00e676;}
-.subtitle {text-align:center; font-size:18px; font-style:italic; color:#b9f6ca;}
-.result-card {background:rgba(255,255,255,0.08); padding:25px; border-radius:20px; text-align:center;}
-.predicted {font-size:30px; font-weight:bold; color:#76ff03;}
-.confidence {font-size:20px; color:#b2ff59;}
-.tip {font-size:18px; color:#e8f5e9;}
+[data-testid="stAppViewContainer"] {
+    background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364);
+    color: white;
+}
+.title {
+    text-align:center; 
+    font-size:52px; 
+    font-weight:900; 
+    color:#76ff03; 
+    text-shadow:0px 0px 25px #76ff03,0px 0px 40px #00e676;
+}
+.subtitle {
+    text-align:center; 
+    font-size:18px; 
+    font-style:italic; 
+    color:#b9f6ca;
+}
+.result-card {
+    background:rgba(255,255,255,0.08); 
+    padding:25px; 
+    border-radius:20px; 
+    text-align:center;
+}
+.predicted {
+    font-size:30px; 
+    font-weight:bold; 
+    color:#76ff03;
+}
+.confidence {
+    font-size:20px; 
+    color:#b2ff59;
+}
+.tip {
+    font-size:18px; 
+    color:#e8f5e9;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -34,6 +63,7 @@ def load_model():
     return tf.keras.models.load_model(path)
 
 model = load_model()
+
 class_names = ['metal', 'organic', 'paper', 'plastic']
 eco_tips = {
     "metal": "🪙 Collect and sell metal waste to recyclers.",
@@ -55,7 +85,7 @@ def predict_image(image):
 # --- INPUT OPTION ---
 option = st.selectbox("Select input method:", ["Upload Image", "Live Camera Feed"])
 
-# --- IMAGE UPLOAD ---
+# --- UPLOAD IMAGE ---
 if option == "Upload Image":
     uploaded = st.file_uploader("📸 Upload Waste Image", type=["jpg", "jpeg", "png"])
     if uploaded:
@@ -72,9 +102,11 @@ if option == "Upload Image":
         </div>
         """, unsafe_allow_html=True)
 
-# --- LIVE CAMERA FEED WITH START/STOP BUTTONS ---
+# --- LIVE CAMERA FEED ---
 elif option == "Live Camera Feed":
+    st.markdown("📷 Capture image using your camera")
 
+    # create session variable
     if "show_cam" not in st.session_state:
         st.session_state.show_cam = False
 
@@ -87,7 +119,6 @@ elif option == "Live Camera Feed":
             st.session_state.show_cam = False
 
     if st.session_state.show_cam:
-        st.markdown("📷 Take a live picture to classify the waste")
         camera_image = st.camera_input("Live Camera")
 
         if camera_image:
