@@ -42,10 +42,7 @@ eco_tips = {
     "plastic": "🧴 Reduce single-use plastics — recycle properly."
 }
 
-# --- INPUT OPTION ---
-option = st.selectbox("Select input method:", ["Upload Image", "Live Camera Feed"])
-
-# --- FUNCTION FOR PREDICTION ---
+# --- PREDICT FUNCTION ---
 def predict_image(image):
     img = image.resize((150, 150))
     img = np.array(img) / 255.0
@@ -55,7 +52,10 @@ def predict_image(image):
     conf = float(np.max(preds) * 100)
     return cls, conf
 
-# --- UPLOAD IMAGE ---
+# --- INPUT OPTION ---
+option = st.selectbox("Select input method:", ["Upload Image", "Live Camera Feed"])
+
+# --- IMAGE UPLOAD ---
 if option == "Upload Image":
     uploaded = st.file_uploader("📸 Upload Waste Image", type=["jpg", "jpeg", "png"])
     if uploaded:
@@ -72,25 +72,37 @@ if option == "Upload Image":
         </div>
         """, unsafe_allow_html=True)
 
-# --- LIVE CAMERA FEED (Streamlit CLOUD COMPATIBLE) ---
+# --- LIVE CAMERA FEED WITH START/STOP BUTTONS ---
 elif option == "Live Camera Feed":
-    st.markdown("📷 Capture image using your camera")
 
-    camera_image = st.camera_input("Click below to capture waste")
+    if "show_cam" not in st.session_state:
+        st.session_state.show_cam = False
 
-    if camera_image:
-        img = Image.open(camera_image)
-        st.image(img, caption="Captured Image", use_container_width=True)
+    col1, col2 = st.columns(2)
+    with col1:
+        if st.button("▶ Start Camera"):
+            st.session_state.show_cam = True
+    with col2:
+        if st.button("⏹ Stop Camera"):
+            st.session_state.show_cam = False
 
-        cls, conf = predict_image(img)
+    if st.session_state.show_cam:
+        st.markdown("📷 Take a live picture to classify the waste")
+        camera_image = st.camera_input("Live Camera")
 
-        st.markdown(f"""
-        <div class="result-card">
-            <p class="predicted">✅ {cls.upper()}</p>
-            <p class="confidence">Confidence: {conf:.2f}%</p>
-            <p class="tip">{eco_tips[cls]}</p>
-        </div>
-        """, unsafe_allow_html=True)
+        if camera_image:
+            img = Image.open(camera_image)
+            st.image(img, caption="Captured Image", use_container_width=True)
+
+            cls, conf = predict_image(img)
+
+            st.markdown(f"""
+            <div class="result-card">
+                <p class="predicted">✅ {cls.upper()}</p>
+                <p class="confidence">Confidence: {conf:.2f}%</p>
+                <p class="tip">{eco_tips[cls]}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
 # --- FOOTER ---
 st.markdown("""
