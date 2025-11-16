@@ -1,6 +1,6 @@
-streamlit==1.36.0
-tensorflow==2.15.0
-numpy==1.26.4
-pillow==10.2.0
-huggingface_hub==0.20.3
-protobuf==4.25.3
+streamlit
+tensorflow
+numpy
+pillow
+opencv-python-headless
+pyttsx3
