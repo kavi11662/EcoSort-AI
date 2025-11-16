@@ -1,4 +1,4 @@
- 
+import streamlit as st
 import tensorflow as tf
 import numpy as np
 from PIL import Image
@@ -56,11 +56,14 @@ if option == "Upload Image" and model_loaded:
     if uploaded_file:
         image = Image.open(uploaded_file)
         st.image(image, caption="📷 Uploaded Image", use_container_width=True)
-        img_array = np.array(image.resize((150,150)))/255.0
+
+        img_array = np.array(image.resize((150,150))) / 255.0
         img_array = np.expand_dims(img_array, axis=0)
+
         predictions = model.predict(img_array)
         predicted_class = class_names[np.argmax(predictions)]
-        confidence = float(np.max(predictions)*100)
+        confidence = float(np.max(predictions) * 100)
+
         st.markdown(f"""
         <div class="result-card">
             <p class="predicted">✅ {predicted_class.upper()}</p>
@@ -68,15 +71,16 @@ if option == "Upload Image" and model_loaded:
             <p class="tip">{eco_tips[predicted_class]}</p>
         </div>
         """, unsafe_allow_html=True)
+
         tts = gTTS(text=f"This is {predicted_class}. {eco_tips[predicted_class]}", lang='en')
-        audio_path = tempfile.NamedTemporaryFile(delete=False,suffix=".mp3").name
+        audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3").name
         tts.save(audio_path)
         st.audio(audio_path, format="audio/mp3")
 
 # --- LIVE CAMERA FEED ---
 elif option == "Live Camera Feed" and model_loaded:
     st.markdown("📷 Live waste detection active — click Start Camera to classify!")
-    
+
     if 'camera_running' not in st.session_state:
         st.session_state.camera_running = False
 
@@ -96,17 +100,22 @@ elif option == "Live Camera Feed" and model_loaded:
     if st.session_state.camera_running:
         cap = cv2.VideoCapture(0)
         last_pred = ""
+
         while st.session_state.camera_running:
             ret, frame = cap.read()
             if not ret:
                 continue
+
             frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
             FRAME_WINDOW.image(frame_rgb, channels="RGB")
-            img_pred = cv2.resize(frame,(150,150))/255.0
-            img_pred = np.expand_dims(img_pred,axis=0)
+
+            img_pred = cv2.resize(frame, (150,150)) / 255.0
+            img_pred = np.expand_dims(img_pred, axis=0)
+
             predictions = model.predict(img_pred)
             predicted_class = class_names[np.argmax(predictions)]
-            confidence = float(np.max(predictions)*100)
+            confidence = float(np.max(predictions) * 100)
+
             RESULT_WINDOW.markdown(f"""
             <div class="result-card">
                 <p class="predicted">✅ {predicted_class.upper()}</p>
@@ -114,12 +123,14 @@ elif option == "Live Camera Feed" and model_loaded:
                 <p class="tip">{eco_tips[predicted_class]}</p>
             </div>
             """, unsafe_allow_html=True)
+
             if predicted_class != last_pred:
                 tts = gTTS(text=f"This is {predicted_class}. {eco_tips[predicted_class]}", lang='en')
-                audio_path = tempfile.NamedTemporaryFile(delete=False,suffix=".mp3").name
+                audio_path = tempfile.NamedTemporaryFile(delete=False, suffix=".mp3").name
                 tts.save(audio_path)
                 st.audio(audio_path, format="audio/mp3")
                 last_pred = predicted_class
+
         cap.release()
 
 # --- FOOTER ---
