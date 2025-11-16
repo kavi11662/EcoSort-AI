@@ -7,19 +7,16 @@ from huggingface_hub import hf_hub_download
 # --- PAGE CONFIG ---
 st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
 
-# --- ORIGINAL UI STYLING ---
+# --- UI STYLING ---
 st.markdown("""
 <style>
 [data-testid="stAppViewContainer"] {background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364); color: white;}
-.title {text-align:center; font-size:52px; font-weight:900; color:#76ff03; text-shadow:0px 0px 25px #76ff03,0px 0px 40px #00e676; margin-bottom:5px;}
-.subtitle {text-align:center; font-size:18px; font-style:italic; color:#b9f6ca; margin-bottom:20px;}
-[data-testid="stFileUploader"] {border:2px dashed #76ff03 !important; border-radius:15px; background-color:rgba(255,255,255,0.05);}
-img {border-radius:20px; box-shadow:0 0 25px rgba(118,255,3,0.4);}
-.result-card {background:rgba(255,255,255,0.08); border-radius:20px; padding:30px; text-align:center; box-shadow:0 0 25px rgba(0,255,127,0.3); margin-top:20px;}
-.predicted {font-size:30px; font-weight:bold; color:#76ff03; text-shadow:0 0 20px #00e676;}
+.title {text-align:center; font-size:52px; font-weight:900; color:#76ff03; text-shadow:0px 0px 25px #76ff03,0px 0px 40px #00e676;}
+.subtitle {text-align:center; font-size:18px; font-style:italic; color:#b9f6ca;}
+.result-card {background:rgba(255,255,255,0.08); padding:25px; border-radius:20px; text-align:center;}
+.predicted {font-size:30px; font-weight:bold; color:#76ff03;}
 .confidence {font-size:20px; color:#b2ff59;}
-.tip {font-size:18px; color:#e8f5e9; margin-top:15px;}
-.footer {text-align:center; color:#c8e6c9; margin-top:40px; font-size:16px;}
+.tip {font-size:18px; color:#e8f5e9;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -27,89 +24,77 @@ img {border-radius:20px; box-shadow:0 0 25px rgba(118,255,3,0.4);}
 st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
 st.markdown('<p class="subtitle">Choose image upload or live camera — AI will classify waste in real-time 🌿</p>', unsafe_allow_html=True)
 
-# --- LOAD MODEL FROM HUGGINGFACE ---
+# --- LOAD MODEL ---
 @st.cache_resource
 def load_model():
-    try:
-        model_path = hf_hub_download(
-            repo_id="kavi11662/ecosort-ai",
-            filename="model/EcoSortAI_model.h5"
-        )
-        model = tf.keras.models.load_model(model_path)
-        return model
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        return None
+    path = hf_hub_download(
+        repo_id="kavi11662/ecosort-ai",
+        filename="model/EcoSortAI_model.h5"
+    )
+    return tf.keras.models.load_model(path)
 
 model = load_model()
-model_loaded = model is not None
-
 class_names = ['metal', 'organic', 'paper', 'plastic']
 eco_tips = {
-    "metal": "🪙 Collect and sell metal waste to recyclers — avoid mixing with general trash.",
-    "organic": "🍃 Compost organic waste into nutrient-rich soil. Great for gardening!",
-    "paper": "📄 Reuse or recycle paper. Avoid burning — it releases harmful gases.",
-    "plastic": "🧴 Drop off plastic at recycling centers. Avoid single-use plastics."
+    "metal": "🪙 Collect and sell metal waste to recyclers.",
+    "organic": "🍃 Compost organic waste — great for plants!",
+    "paper": "📄 Reuse or recycle paper instead of burning.",
+    "plastic": "🧴 Reduce single-use plastics — recycle properly."
 }
 
-# --- INPUT METHOD ---
+# --- INPUT OPTION ---
 option = st.selectbox("Select input method:", ["Upload Image", "Live Camera Feed"])
 
-# ------------------------------
-# UPLOAD IMAGE
-# ------------------------------
-if option == "Upload Image" and model_loaded:
-    uploaded_file = st.file_uploader("📸 Upload Waste Image", type=["jpg","jpeg","png"])
-    if uploaded_file:
-        image = Image.open(uploaded_file)
-        st.image(image, caption="📷 Uploaded Image", use_container_width=True)
+# --- FUNCTION FOR PREDICTION ---
+def predict_image(image):
+    img = image.resize((150, 150))
+    img = np.array(img) / 255.0
+    img = np.expand_dims(img, 0)
+    preds = model.predict(img)
+    cls = class_names[np.argmax(preds)]
+    conf = float(np.max(preds) * 100)
+    return cls, conf
 
-        img_array = np.array(image.resize((150,150))) / 255.0
-        img_array = np.expand_dims(img_array, axis=0)
+# --- UPLOAD IMAGE ---
+if option == "Upload Image":
+    uploaded = st.file_uploader("📸 Upload Waste Image", type=["jpg", "jpeg", "png"])
+    if uploaded:
+        img = Image.open(uploaded)
+        st.image(img, caption="Uploaded Image", use_container_width=True)
 
-        predictions = model.predict(img_array)
-        predicted_class = class_names[np.argmax(predictions)]
-        confidence = float(np.max(predictions) * 100)
+        cls, conf = predict_image(img)
 
         st.markdown(f"""
         <div class="result-card">
-            <p class="predicted">✅ {predicted_class.upper()}</p>
-            <p class="confidence">Confidence: {confidence:.2f}%</p>
-            <p class="tip">{eco_tips[predicted_class]}</p>
+            <p class="predicted">✅ {cls.upper()}</p>
+            <p class="confidence">Confidence: {conf:.2f}%</p>
+            <p class="tip">{eco_tips[cls]}</p>
         </div>
         """, unsafe_allow_html=True)
 
-# ------------------------------
-# LIVE CAMERA — FAST VERSION (NO OPENCV)
-# ------------------------------
-elif option == "Live Camera Feed" and model_loaded:
-    st.markdown("📷 Take a live picture to classify the waste")
+# --- LIVE CAMERA FEED (Streamlit CLOUD COMPATIBLE) ---
+elif option == "Live Camera Feed":
+    st.markdown("📷 Capture image using your camera")
 
-    img_file = st.camera_input("Open Camera")
+    camera_image = st.camera_input("Click below to capture waste")
 
-    if img_file:
-        image = Image.open(img_file)
-        st.image(image, caption="Captured Image", use_container_width=True)
+    if camera_image:
+        img = Image.open(camera_image)
+        st.image(img, caption="Captured Image", use_container_width=True)
 
-        img_array = np.array(image.resize((150,150))) / 255.0
-        img_array = np.expand_dims(img_array, axis=0)
-
-        predictions = model.predict(img_array)
-        predicted_class = class_names[np.argmax(predictions)]
-        confidence = float(np.max(predictions) * 100)
+        cls, conf = predict_image(img)
 
         st.markdown(f"""
         <div class="result-card">
-            <p class="predicted">✅ {predicted_class.upper()}</p>
-            <p class="confidence">Confidence: {confidence:.2f}%</p>
-            <p class="tip">{eco_tips[predicted_class]}</p>
+            <p class="predicted">✅ {cls.upper()}</p>
+            <p class="confidence">Confidence: {conf:.2f}%</p>
+            <p class="tip">{eco_tips[cls]}</p>
         </div>
         """, unsafe_allow_html=True)
 
 # --- FOOTER ---
 st.markdown("""
-<div class="footer">
-Developed by <b>Kavibharathi S</b> | AICTE–Shell–Edunet Green Skills Internship 🌍<br>
-"Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱"
+<div style="text-align:center; margin-top:30px; color:#b2ff59;">
+Developed by <b>Kavibharathi S</b> 🌱 | AICTE–Shell–Edunet Internship
 </div>
 """, unsafe_allow_html=True)
