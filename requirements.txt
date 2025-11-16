@@ -1,7 +1,7 @@
 streamlit
 tensorflow
-opencv-python
 numpy
 pillow
-gtts
+gTTS
+opencv-python-headless
 reportlab
