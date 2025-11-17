@@ -33,7 +33,7 @@ def load_model():
     try:
         model_path = hf_hub_download(
             repo_id="kavi11662/ecosort-ai",
-            filename="model/EcoSortAI_model.h5"
+            filename="model/EcoSort_AI_model.h5"
         )
         model = tf.keras.models.load_model(model_path)
         return model
@@ -113,5 +113,6 @@ Developed by <b>Kavibharathi S</b> <br>
 "Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱"
 </div>
 """, unsafe_allow_html=True)
+
 
 
