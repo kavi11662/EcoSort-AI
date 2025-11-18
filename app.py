@@ -33,7 +33,7 @@ def load_model():
     try:
         model_path = hf_hub_download(
             repo_id="kavi11662/ecosort-ai",
-            filename="model/EcoSort_AI_model.h5"
+            filename="model/EcoSort_model.h5"   # <--- UPDATE ONLY IF MODEL NAME CHANGES
         )
         model = tf.keras.models.load_model(model_path)
         return model
@@ -44,12 +44,26 @@ def load_model():
 model = load_model()
 model_loaded = model is not None
 
-class_names = ['metal', 'organic', 'paper', 'plastic']
+# ----------------------------------
+# UPDATED 10 CLASSES (NEW DATASET)
+# ----------------------------------
+class_names = [
+    'battery', 'biological', 'cardboard', 'clothes', 'glass',
+    'metal', 'paper', 'plastic', 'shoes', 'trash'
+]
+
+# TIPS FOR EACH CLASS
 eco_tips = {
-    "metal": "🪙 Collect and sell metal waste to recyclers — avoid mixing with general trash.",
-    "organic": "🍃 Compost organic waste into nutrient-rich soil. Great for gardening!",
-    "paper": "📄 Reuse or recycle paper. Avoid burning — it releases harmful gases.",
-    "plastic": "🧴 Drop off plastic at recycling centers. Avoid single-use plastics."
+    "battery": "🔋 Batteries contain harmful chemicals. Dispose only at e-waste collection centers.",
+    "biological": "🍃 Biological waste should be composted or handled safely if hazardous.",
+    "cardboard": "📦 Flatten cardboard boxes and send them to recycling centers.",
+    "clothes": "👕 Donate usable clothes. Recycle torn clothes into cleaning cloths.",
+    "glass": "🍾 Separate glass by color and recycle. Handle broken glass carefully!",
+    "metal": "🔧 Metal can be sold to scrap dealers — highly recyclable.",
+    "paper": "📄 Recycle paper or reuse for crafts. Keep it dry for best recycling quality.",
+    "plastic": "🧴 Avoid single-use plastics. Clean and send for recycling.",
+    "shoes": "👟 Donate shoes in good condition. Recycle damaged ones at textile centers.",
+    "trash": "🗑 General waste should go to garbage bins. Avoid mixing recyclable items with it."
 }
 
 # --- INPUT METHOD ---
@@ -80,7 +94,7 @@ if option == "Upload Image" and model_loaded:
         """, unsafe_allow_html=True)
 
 # ------------------------------
-# LIVE CAMERA — FAST VERSION (NO OPENCV)
+# LIVE CAMERA — FAST VERSION
 # ------------------------------
 elif option == "Live Camera Feed" and model_loaded:
     st.markdown("📷 Take a live picture to classify the waste")
@@ -113,6 +127,3 @@ Developed by <b>Kavibharathi S</b> <br>
 "Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱"
 </div>
 """, unsafe_allow_html=True)
-
-
-
