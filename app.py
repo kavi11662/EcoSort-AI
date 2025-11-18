@@ -33,7 +33,7 @@ def load_model():
     try:
         model_path = hf_hub_download(
             repo_id="kavi11662/ecosort-ai",
-            filename="model/EcoSort_model.h5"   # <--- UPDATE ONLY IF MODEL NAME CHANGES
+            filename="model/EcoSort_model.h5"  # EXACT FILE NAME
         )
         model = tf.keras.models.load_model(model_path)
         return model
@@ -44,9 +44,7 @@ def load_model():
 model = load_model()
 model_loaded = model is not None
 
-# ----------------------------------
-# UPDATED 10 CLASSES (NEW DATASET)
-# ----------------------------------
+# --- 10 NEW CLASSES ---
 class_names = [
     'battery', 'biological', 'cardboard', 'clothes', 'glass',
     'metal', 'paper', 'plastic', 'shoes', 'trash'
@@ -54,24 +52,22 @@ class_names = [
 
 # TIPS FOR EACH CLASS
 eco_tips = {
-    "battery": "🔋 Batteries contain harmful chemicals. Dispose only at e-waste collection centers.",
-    "biological": "🍃 Biological waste should be composted or handled safely if hazardous.",
-    "cardboard": "📦 Flatten cardboard boxes and send them to recycling centers.",
-    "clothes": "👕 Donate usable clothes. Recycle torn clothes into cleaning cloths.",
-    "glass": "🍾 Separate glass by color and recycle. Handle broken glass carefully!",
-    "metal": "🔧 Metal can be sold to scrap dealers — highly recyclable.",
-    "paper": "📄 Recycle paper or reuse for crafts. Keep it dry for best recycling quality.",
-    "plastic": "🧴 Avoid single-use plastics. Clean and send for recycling.",
-    "shoes": "👟 Donate shoes in good condition. Recycle damaged ones at textile centers.",
-    "trash": "🗑 General waste should go to garbage bins. Avoid mixing recyclable items with it."
+    "battery": "Batteries contain harmful chemicals. Dispose only at e-waste collection centers.",
+    "biological": "Biological waste should be composted or handled safely if hazardous.",
+    "cardboard": "Flatten cardboard boxes and send them to recycling centers.",
+    "clothes": "Donate usable clothes. Recycle torn clothes into cleaning cloths.",
+    "glass": "Separate glass by color and recycle. Handle broken glass carefully.",
+    "metal": "Metal can be sold to scrap dealers — highly recyclable.",
+    "paper": "Recycle paper or reuse for crafts. Keep it dry for best quality.",
+    "plastic": "Avoid single-use plastics. Clean and send for recycling.",
+    "shoes": "Donate usable shoes. Recycle damaged ones at textile centers.",
+    "trash": "General waste — avoid mixing recyclable items with it."
 }
 
 # --- INPUT METHOD ---
 option = st.selectbox("Select input method:", ["Upload Image", "Live Camera Feed"])
 
-# ------------------------------
 # UPLOAD IMAGE
-# ------------------------------
 if option == "Upload Image" and model_loaded:
     uploaded_file = st.file_uploader("📸 Upload Waste Image", type=["jpg","jpeg","png"])
     if uploaded_file:
@@ -93,9 +89,7 @@ if option == "Upload Image" and model_loaded:
         </div>
         """, unsafe_allow_html=True)
 
-# ------------------------------
-# LIVE CAMERA — FAST VERSION
-# ------------------------------
+# LIVE CAMERA
 elif option == "Live Camera Feed" and model_loaded:
     st.markdown("📷 Take a live picture to classify the waste")
 
@@ -120,7 +114,7 @@ elif option == "Live Camera Feed" and model_loaded:
         </div>
         """, unsafe_allow_html=True)
 
-# --- FOOTER ---
+# FOOTER
 st.markdown("""
 <div class="footer">
 Developed by <b>Kavibharathi S</b> <br>
