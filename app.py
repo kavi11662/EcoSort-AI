@@ -127,7 +127,6 @@ import streamlit as st
 from utils import global_css
 
 st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
-
 global_css()
 
 st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
@@ -149,6 +148,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
