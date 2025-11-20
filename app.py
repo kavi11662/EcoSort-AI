@@ -126,41 +126,177 @@
 import streamlit as st
 from utils import global_css
 
-# --- PAGE SETTINGS ---
-st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
-
-# --- APPLY GLOBAL STYLING ---
+st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="wide")
 global_css()
 
-# --- TITLE & SUBTITLE ---
-st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Smart Waste Classification for a Cleaner Planet 🌿</p>', unsafe_allow_html=True)
-
-# --- HOME PAGE CONTENT ---
+# --- NAVBAR ---
 st.markdown("""
-<div style="text-align:center; margin-top:40px;">
-    <h2 style="color:#76ff03;">Your Smart Waste Assistant</h2>
-    <p style="font-size:18px; color:#e8f5e9;">
-        Capture or upload a waste image — EcoSort AI instantly classifies it
-        and gives eco-friendly recycling tips.
-    </p>
-    <br>
+<style>
+.navbar {
+    display:flex;
+    justify-content:center;
+    gap:35px;
+    background:rgba(255,255,255,0.08);
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:40px;
+}
+.nav-item {
+    color:#76ff03;
+    font-size:20px;
+    font-weight:600;
+    text-decoration:none;
+}
+.nav-item:hover { color:#00e676; }
+</style>
+
+<div class="navbar">
+    <a class="nav-item" href="/">Home</a>
+    <a class="nav-item" href="/1_About">About</a>
+    <a class="nav-item" href="/2_Features">Solution</a>
+    <a class="nav-item" href="#">Blogs</a>
+    <a class="nav-item" href="#">Survey</a>
+    <a class="nav-item" href="/3_Classifier">Get Started</a>
 </div>
 """, unsafe_allow_html=True)
 
-# --- BUTTON THAT OPENS CLASSIFIER PAGE ---
-clicked = st.button("Try the Classifier 🚀")
-
-if clicked:
-    st.switch_page("pages/3_Classifier.py")
-
-# --- FOOTER ---
+# ---------------- HERO SECTION ----------------
 st.markdown("""
-<div style="text-align:center; margin-top:40px; color:#c8e6c9; font-size:15px;">
-Developed by <b>Kavibharathi S</b><br>
-"Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱"
+<h1 style="text-align:center; color:#76ff03; font-size:55px; font-weight:900;">
+From Waste to Wonder — Powered by Smart Technology
+</h1>
+
+<p style="text-align:center; font-size:20px; color:#e8f5e9; max-width:900px; margin:auto;">
+EcoSortAI is a cleantech solution transforming how we sort waste.  
+With intelligent automation and real-time insights, we help cities, homes, and businesses  
+reduce landfill use, lower emissions, and move toward a zero-waste future.
+</p>
+
+<div style="text-align:center; margin-top:25px;">
+    <a href="/3_Classifier">
+        <button style="padding:15px 40px; font-size:20px; background:#76ff03; color:black; 
+                       border:none; border-radius:10px; cursor:pointer;">
+            Get Started 🚀
+        </button>
+    </a>
+
+    <button style="padding:15px 40px; font-size:20px; background:transparent; color:#76ff03; 
+                   border:2px solid #76ff03; border-radius:10px; margin-left:15px; cursor:pointer;">
+        Join the Waitlist
+    </button>
 </div>
 """, unsafe_allow_html=True)
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# ---------------- WHY ECOSORT SECTION ----------------
+st.markdown("""
+<h2 style="color:#76ff03; font-size:40px; text-align:center;">Why EcoSortAI?</h2>
+
+<p style="text-align:center; font-size:20px; color:#e8f5e9; max-width:850px; margin:auto;">
+We built EcoSortAI to make sustainable living easy. With AI + smart sensors,  
+our intelligent system automatically detects and sorts waste — no confusion, no mistakes.
+</p>
+
+<br>
+
+<div style="display:flex; justify-content:center; gap:40px; flex-wrap:wrap;">
+
+    <div style="width:300px; background:rgba(255,255,255,0.08); padding:25px; border-radius:15px;">
+        <h3 style="color:#76ff03;">🌍 Sustainable Impact</h3>
+        <p>Reduces landfill waste and promotes eco-friendly habits.</p>
+    </div>
+
+    <div style="width:300px; background:rgba(255,255,255,0.08); padding:25px; border-radius:15px;">
+        <h3 style="color:#76ff03;">🌎 Global Readiness</h3>
+        <p>Adapts to waste systems across regions worldwide.</p>
+    </div>
+
+    <div style="width:300px; background:rgba(255,255,255,0.08); padding:25px; border-radius:15px;">
+        <h3 style="color:#76ff03;">🤖 Smart Technology</h3>
+        <p>AI + ML ensure highly accurate waste sorting.</p>
+    </div>
+
+    <div style="width:300px; background:rgba(255,255,255,0.08); padding:25px; border-radius:15px;">
+        <h3 style="color:#76ff03;">🔐 Secure & Reliable</h3>
+        <p>Built with strong data privacy & robust performance.</p>
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# ---------------- HOW IT WORKS ----------------
+st.markdown("""
+<h2 style="color:#76ff03; font-size:40px; text-align:center;">How EcoSortAI Works</h2>
+<br>
+
+<div style="display:flex; justify-content:center; flex-wrap:wrap; gap:40px;">
+
+    <div style="width:300px;">
+        <h3 style="color:#76ff03;">1️⃣ Waste Detection</h3>
+        <p>Smart sensors identify when waste is added.</p>
+    </div>
+
+    <div style="width:300px;">
+        <h3 style="color:#76ff03;">2️⃣ AI Classification</h3>
+        <p>Our ML model identifies the waste type instantly.</p>
+    </div>
+
+    <div style="width:300px;">
+        <h3 style="color:#76ff03;">3️⃣ Automated Sorting</h3>
+        <p>Robotic flaps place waste into the correct bin.</p>
+    </div>
+
+    <div style="width:300px;">
+        <h3 style="color:#76ff03;">4️⃣ Real-Time Insights</h3>
+        <p>Track your recycling performance and progress.</p>
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# ---------------- CHOOSE YOUR BIN ----------------
+st.markdown("""
+<h2 style="color:#76ff03; font-size:40px; text-align:center;">Choose Your EcoSortAI Bin</h2>
+<br>
+
+<div style="display:flex; justify-content:center; gap:50px; flex-wrap:wrap;">
+
+    <div style="width:320px; background:rgba(255,255,255,0.08); padding:25px; border-radius:15px;">
+        <h3 style="color:#76ff03;">🏡 Residential</h3>
+        <p>Smart waste solution for homes and apartments.</p>
+        <button style="margin-top:10px; padding:10px 20px; border:none; border-radius:8px; background:#76ff03;">
+            Learn More
+        </button>
+    </div>
+
+    <div style="width:320px; background:rgba(255,255,255,0.08); padding:25px; border-radius:15px;">
+        <h3 style="color:#76ff03;">🏢 Corporate</h3>
+        <p>Automated waste management for businesses.</p>
+        <button style="margin-top:10px; padding:10px 20px; border:none; border-radius:8px; background:#76ff03;">
+            Learn More
+        </button>
+    </div>
+
+</div>
+""", unsafe_allow_html=True)
+
+st.markdown("<br><br>", unsafe_allow_html=True)
+
+# ---------------- FOOTER ----------------
+st.markdown("""
+<hr style="border:1px solid #76ff03;">
+
+<p style="text-align:center; color:#b9f6ca;">
+Made with 💚 by <b>Kavibharathi S</b> — AICTE Shell Edunet Green Skills Internship
+</p>
+""", unsafe_allow_html=True)
+
+
 
 
 
