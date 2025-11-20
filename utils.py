@@ -4,6 +4,7 @@ import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
+
 # -----------------------------
 #  GLOBAL CSS (UI Styling)
 # -----------------------------
@@ -81,15 +82,15 @@ def load_model():
             repo_id="kavi11662/ecosort-ai",
             filename="model/EcoSort_model.h5"
         )
-        model = tf.keras.models.load_model(model_path)
-        return model
+        return tf.keras.models.load_model(model_path)
+
     except Exception as e:
         st.error(f"Error loading model: {e}")
         return None
 
 
 # -----------------------------
-#  WASTE CLASS LABELS
+#  CLASS LABELS
 # -----------------------------
 CLASS_NAMES = [
     'battery', 'biological', 'cardboard', 'clothes', 'glass',
@@ -101,31 +102,28 @@ CLASS_NAMES = [
 # -----------------------------
 ECO_TIPS = {
     "battery": "Batteries contain harmful chemicals. Dispose only at e-waste collection centers.",
-    "biological": "Biological waste should be composted or handled safely if hazardous.",
+    "biological": "Biological waste should be composted or handled safely.",
     "cardboard": "Flatten cardboard boxes and send them to recycling centers.",
-    "clothes": "Donate usable clothes. Recycle damaged ones at textile centers.",
-    "glass": "Separate glass by color and recycle. Handle broken glass carefully.",
-    "metal": "Metal can be sold to scrap dealers — it is highly recyclable.",
-    "paper": "Recycle paper or reuse for crafts. Keep it dry for best quality.",
-    "plastic": "Avoid single-use plastics. Clean and send for recycling.",
-    "shoes": "Donate usable shoes. Recycle damaged ones at textile centers.",
-    "trash": "General waste — avoid mixing recyclable items with it."
+    "clothes": "Donate usable clothes. Recycle torn clothes into cleaning cloths.",
+    "glass": "Separate glass by color and recycle.",
+    "metal": "Metal can be sold to scrap dealers — highly recyclable.",
+    "paper": "Recycle paper or reuse it. Keep it dry.",
+    "plastic": "Avoid single-use plastics. Clean and recycle.",
+    "shoes": "Donate usable shoes. Recycle damaged ones.",
+    "trash": "Dispose general waste responsibly. Avoid mixing recyclables into it."
 }
 
 
 # -----------------------------
-#  IMAGE CLASSIFICATION FUNCTION
+#  CLASSIFY IMAGE
 # -----------------------------
 def classify_image(image, model):
-    """
-    Accept PIL image → convert → predict → return class + confidence
-    """
     img_array = np.array(image.resize((150, 150))) / 255.0
     img_array = np.expand_dims(img_array, axis=0)
 
-    predictions = model.predict(img_array)
-    class_id = int(np.argmax(predictions))
+    preds = model.predict(img_array)
+    class_id = int(np.argmax(preds))
     class_name = CLASS_NAMES[class_id]
-    confidence = float(np.max(predictions) * 100)
+    conf = float(np.max(preds) * 100)
 
-    return class_name, confidence, ECO_TIPS[class_name]
+    return class_name, conf, ECO_TIPS[class_name]
