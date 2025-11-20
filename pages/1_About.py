@@ -7,8 +7,8 @@ global_css()
 st.markdown('<h1 class="title">About EcoSort AI</h1>', unsafe_allow_html=True)
 
 st.write("""
-EcoSort AI solves the real problem of improper waste segregation by using deep learning  
-to classify **10 types of waste** and provide correct disposal guidance.
+EcoSort AI solves the real-world problem of improper waste segregation using deep learning
+to classify **10 types of waste** with instant eco-friendly disposal guidance.
 
-Its mission is to reduce pollution, support recycling, and promote clean surroundings.
+Our mission is to reduce pollution, support recycling, and build a cleaner environment.
 """)
