@@ -63,13 +63,14 @@ def global_css():
 def navbar():
     st.markdown("""
     <div class="navbar">
-        <a class="nav-item" href="/Home" target="_self">Home</a>
-        <a class="nav-item" href="/About" target="_self">About</a>
-        <a class="nav-item" href="/Features" target="_self">Features</a>
-        <a class="nav-item" href="/Classifier" target="_self">EcoSort AI</a>
-        <a class="nav-item" href="/Contact" target="_self">Contact</a>
+        <a class="nav-item" href="./Home" target="_self">Home</a>
+        <a class="nav-item" href="./About" target="_self">About</a>
+        <a class="nav-item" href="./Features" target="_self">Features</a>
+        <a class="nav-item" href="./Classifier" target="_self">EcoSort AI</a>
+        <a class="nav-item" href="./Contact" target="_self">Contact</a>
     </div>
     """, unsafe_allow_html=True)
+
 
 
 # -----------------------------
