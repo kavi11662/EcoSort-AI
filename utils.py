@@ -4,9 +4,6 @@ import numpy as np
 from PIL import Image
 from huggingface_hub import hf_hub_download
 
-# -----------------------------
-#  GLOBAL CSS
-# -----------------------------
 def global_css():
     st.markdown("""
     <style>
@@ -36,32 +33,23 @@ def global_css():
     </style>
     """, unsafe_allow_html=True)
 
-# -----------------------------
-#  LOAD MODEL
-# -----------------------------
 @st.cache_resource
 def load_model():
     try:
-        model_path = hf_hub_download(
+        path = hf_hub_download(
             repo_id="kavi11662/ecosort-ai",
             filename="model/EcoSort_model.h5"
         )
-        return tf.keras.models.load_model(model_path)
+        return tf.keras.models.load_model(path)
     except Exception as e:
         st.error(f"Model Load Error: {e}")
         return None
 
-# -----------------------------
-#  CLASS LABELS
-# -----------------------------
 CLASS_NAMES = [
     'battery', 'biological', 'cardboard', 'clothes', 'glass',
     'metal', 'paper', 'plastic', 'shoes', 'trash'
 ]
 
-# -----------------------------
-#  ECO TIPS
-# -----------------------------
 ECO_TIPS = {
     "battery": "Dispose batteries at authorized e-waste centers.",
     "biological": "Compost biodegradable waste safely.",
@@ -75,16 +63,9 @@ ECO_TIPS = {
     "trash": "Dispose general waste responsibly."
 }
 
-# -----------------------------
-#  PREDICTION FUNCTION
-# -----------------------------
 def classify_image(image, model):
-    img = np.array(image.resize((150, 150))) / 255.0
-    img = np.expand_dims(img, axis=0)
-
+    img = np.array(image.resize((150,150))) / 255.0
+    img = np.expand_dims(img, 0)
     preds = model.predict(img)
     class_id = int(np.argmax(preds))
-    class_name = CLASS_NAMES[class_id]
-    confidence = float(np.max(preds) * 100)
-
-    return class_name, confidence, ECO_TIPS[class_name]
+    return CLASS_NAMES[class_id], float(np.max(preds)*100), ECO_TIPS[CLASS_NAMES[class_id]]
