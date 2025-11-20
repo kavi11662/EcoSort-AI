@@ -2,8 +2,12 @@ import streamlit as st
 from PIL import Image
 from utils import load_model, classify_image, ECO_TIPS, CLASS_NAMES
 from utils import navbar
+from utils import global_css
+
+
 
 st.set_page_config(page_title="EcoSort Classifier", page_icon="♻")
+global_css()
 
 navbar()
 
