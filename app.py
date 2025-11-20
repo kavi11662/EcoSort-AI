@@ -1,178 +1,146 @@
-# import streamlit as st
-# import tensorflow as tf
-# import numpy as np
-# from PIL import Image
-# from huggingface_hub import hf_hub_download
-
-# # --- PAGE CONFIG ---
-# st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
-
-# # --- ORIGINAL UI STYLING ---
-# st.markdown("""
-# <style>
-# [data-testid="stAppViewContainer"] {background: radial-gradient(circle at top left, #0f2027, #203a43, #2c5364); color: white;}
-# .title {text-align:center; font-size:52px; font-weight:900; color:#76ff03; text-shadow:0px 0px 25px #76ff03,0px 0px 40px #00e676; margin-bottom:5px;}
-# .subtitle {text-align:center; font-size:18px; font-style:italic; color:#b9f6ca; margin-bottom:20px;}
-# [data-testid="stFileUploader"] {border:2px dashed #76ff03 !important; border-radius:15px; background-color:rgba(255,255,255,0.05);}
-# img {border-radius:20px; box-shadow:0 0 25px rgba(118,255,3,0.4);}
-# .result-card {background:rgba(255,255,255,0.08); border-radius:20px; padding:30px; text-align:center; box-shadow:0 0 25px rgba(0,255,127,0.3); margin-top:20px;}
-# .predicted {font-size:30px; font-weight:bold; color:#76ff03; text-shadow:0 0 20px #00e676;}
-# .confidence {font-size:20px; color:#b2ff59;}
-# .tip {font-size:18px; color:#e8f5e9; margin-top:15px;}
-# .footer {text-align:center; color:#c8e6c9; margin-top:40px; font-size:16px;}
-# </style>
-# """, unsafe_allow_html=True)
-
-# # --- TITLE ---
-# st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
-# st.markdown('<p class="subtitle">Choose image upload or live camera — AI will classify waste in real-time 🌿</p>', unsafe_allow_html=True)
-
-# # --- LOAD MODEL FROM HUGGINGFACE ---
-# @st.cache_resource
-# def load_model():
-#     try:
-#         model_path = hf_hub_download(
-#             repo_id="kavi11662/ecosort-ai",
-#             filename="model/EcoSort_model.h5"  # EXACT FILE NAME
-#         )
-#         model = tf.keras.models.load_model(model_path)
-#         return model
-#     except Exception as e:
-#         st.error(f"Error loading model: {e}")
-#         return None
-
-# model = load_model()
-# model_loaded = model is not None
-
-# # --- 10 NEW CLASSES ---
-# class_names = [
-#     'battery', 'biological', 'cardboard', 'clothes', 'glass',
-#     'metal', 'paper', 'plastic', 'shoes', 'trash'
-# ]
-
-# # TIPS FOR EACH CLASS
-# eco_tips = {
-#     "battery": "Batteries contain harmful chemicals. Dispose only at e-waste collection centers.",
-#     "biological": "Biological waste should be composted or handled safely if hazardous.",
-#     "cardboard": "Flatten cardboard boxes and send them to recycling centers.",
-#     "clothes": "Donate usable clothes. Recycle torn clothes into cleaning cloths.",
-#     "glass": "Separate glass by color and recycle. Handle broken glass carefully.",
-#     "metal": "Metal can be sold to scrap dealers — highly recyclable.",
-#     "paper": "Recycle paper or reuse for crafts. Keep it dry for best quality.",
-#     "plastic": "Avoid single-use plastics. Clean and send for recycling.",
-#     "shoes": "Donate usable shoes. Recycle damaged ones at textile centers.",
-#     "trash": "General waste — avoid mixing recyclable items with it."
-# }
-
-# # --- INPUT METHOD ---
-# option = st.selectbox("Select input method:", ["Upload Image", "Live Camera Feed"])
-
-# # UPLOAD IMAGE
-# if option == "Upload Image" and model_loaded:
-#     uploaded_file = st.file_uploader("📸 Upload Waste Image", type=["jpg","jpeg","png"])
-#     if uploaded_file:
-#         image = Image.open(uploaded_file)
-#         st.image(image, caption="📷 Uploaded Image", use_container_width=True)
-
-#         img_array = np.array(image.resize((150,150))) / 255.0
-#         img_array = np.expand_dims(img_array, axis=0)
-
-#         predictions = model.predict(img_array)
-#         predicted_class = class_names[np.argmax(predictions)]
-#         confidence = float(np.max(predictions) * 100)
-
-#         st.markdown(f"""
-#         <div class="result-card">
-#             <p class="predicted">✅ {predicted_class.upper()}</p>
-#             <p class="confidence">Confidence: {confidence:.2f}%</p>
-#             <p class="tip">{eco_tips[predicted_class]}</p>
-#         </div>
-#         """, unsafe_allow_html=True)
-
-# # LIVE CAMERA
-# elif option == "Live Camera Feed" and model_loaded:
-#     st.markdown("📷 Take a live picture to classify the waste")
-
-#     img_file = st.camera_input("Open Camera")
-
-#     if img_file:
-#         image = Image.open(img_file)
-#         st.image(image, caption="Captured Image", use_container_width=True)
-
-#         img_array = np.array(image.resize((150,150))) / 255.0
-#         img_array = np.expand_dims(img_array, axis=0)
-
-#         predictions = model.predict(img_array)
-#         predicted_class = class_names[np.argmax(predictions)]
-#         confidence = float(np.max(predictions) * 100)
-
-#         st.markdown(f"""
-#         <div class="result-card">
-#             <p class="predicted">✅ {predicted_class.upper()}</p>
-#             <p class="confidence">Confidence: {confidence:.2f}%</p>
-#             <p class="tip">{eco_tips[predicted_class]}</p>
-#         </div>
-#         """, unsafe_allow_html=True)
-
-# # FOOTER
-# st.markdown("""
-# <div class="footer">
-# Developed by <b>Kavibharathi S</b> <br>
-# "Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱"
-# </div>
-# """, unsafe_allow_html=True)
-
-
 import streamlit as st
-from utils import global_css
+from PIL import Image
+from utils import global_css, load_model, classify_image
+import numpy as np
 
-# --- PAGE SETTINGS ---
-st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
+# Page config
+st.set_page_config(
+    page_title="EcoSort AI",
+    page_icon="♻",
+    layout="wide",
+)
 
-# --- APPLY GLOBAL STYLING ---
+# Apply global CSS
 global_css()
 
-# --- TITLE & SUBTITLE ---
-st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
-st.markdown('<p class="subtitle">Smart Waste Classification for a Cleaner Planet 🌿</p>', unsafe_allow_html=True)
+# Load model once
+model = load_model()
 
-# --- HOME PAGE CONTENT ---
-st.markdown("""
-<div style="text-align:center; margin-top:40px;">
-    <h2 style="color:#76ff03;">Your Smart Waste Assistant</h2>
-    <p style="font-size:18px; color:#e8f5e9;">
-        Capture or upload a waste image — EcoSort AI instantly classifies it
-        and gives eco-friendly recycling tips.
-    </p>
-    <br>
-</div>
-""", unsafe_allow_html=True)
+# Sidebar navigation
+st.sidebar.title("Navigation")
+page = st.sidebar.radio(
+    "Go to",
+    ["Home", "About", "Features", "Classifier", "Contact"]
+)
 
-# --- BUTTON THAT OPENS CLASSIFIER PAGE ---
-clicked = st.button("Try the Classifier 🚀")
+# ---------------------------
+# HOME PAGE
+# ---------------------------
+if page == "Home":
+    st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
+    st.markdown('<p class="subtitle">Smart Waste Classification for a Cleaner Planet 🌿</p>', unsafe_allow_html=True)
 
-if clicked:
-    st.switch_page("pages/3_Classifier.py")
+    st.markdown("""
+    <div style="text-align:center; margin-top:40px;">
+        <h2 style="color:#76ff03; margin-bottom:15px; font-size:32px;">
+            Your Smart Waste Assistant
+        </h2>
+        <p style="font-size:18px; color:#e8f5e9; line-height:1.6; max-width:700px; margin:auto;">
+            Simply upload or capture a picture of your waste —  
+            <b>EcoSort AI instantly identifies the waste type</b>  
+            and provides <b>eco-friendly recycling and disposal tips</b>  
+            to help you contribute to a greener environment.
+        </p>
+        <br>
+        <a href="#classifier">
+            <button style="padding:15px 30px; font-size:20px; background:#76ff03;
+                            border-radius:10px; border:none; cursor:pointer;">
+                Try the Classifier 🚀
+            </button>
+        </a>
+    </div>
+    """, unsafe_allow_html=True)
 
-# --- FOOTER ---
-st.markdown("""
-<div style="text-align:center; margin-top:40px; color:#c8e6c9; font-size:15px;">
-Developed by <b>Kavibharathi S</b><br>
-"Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱"
-</div>
-""", unsafe_allow_html=True)
+    st.markdown("---")
 
+    st.markdown("### How EcoSort AI Works")
+    col1, col2, col3, col4 = st.columns(4)
+    with col1:
+        st.markdown("**Waste Detection**")
+        st.write("Smart sensors detect inserted waste.")
+    with col2:
+        st.markdown("**AI Classification**")
+        st.write("Machine learning identifies waste type in real-time.")
+    with col3:
+        st.markdown("**Automated Sorting**")
+        st.write("Directs waste into correct bins automatically.")
+    with col4:
+        st.markdown("**Real-Time Insights**")
+        st.write("Track recycling progress instantly.")
 
+# ---------------------------
+# ABOUT PAGE
+# ---------------------------
+elif page == "About":
+    st.markdown('<h1 class="title">About EcoSort AI</h1>', unsafe_allow_html=True)
+    st.write("""
+    EcoSort AI solves the real problem of improper waste segregation by using deep learning  
+    to classify **10 types of waste** and provide correct disposal guidance.
 
+    Its mission is to reduce pollution, support recycling, and promote clean surroundings.
+    """)
 
+# ---------------------------
+# FEATURES PAGE
+# ---------------------------
+elif page == "Features":
+    st.markdown('<h1 class="title">Features</h1>', unsafe_allow_html=True)
+    st.write("""
+    ### ✅ 10-Class Waste Detection  
+    ### ✅ Upload Image or Live Camera  
+    ### ✅ Instant Eco-Friendly Tips  
+    ### ✅ HuggingFace Deep Learning Model  
+    ### ✅ Clean Multi-Page UI  
+    """)
 
+# ---------------------------
+# CLASSIFIER PAGE
+# ---------------------------
+elif page == "Classifier":
+    st.markdown('<h1 class="title" id="classifier">EcoSort AI Classifier</h1>', unsafe_allow_html=True)
 
+    option = st.selectbox("Choose Input Type:", ["Upload Image", "Live Camera"])
 
+    # Upload
+    if option == "Upload Image":
+        file = st.file_uploader("Upload Waste Image", type=["jpg","jpeg","png"])
+        if file:
+            img = Image.open(file)
+            st.image(img, use_container_width=True)
+            cls, conf, tip = classify_image(img, model)
+            st.markdown(f"""
+            <div class="result-card">
+                <p class="predicted">{cls.upper()}</p>
+                <p class="confidence">Confidence: {conf:.2f}%</p>
+                <p class="tip">{tip}</p>
+            </div>
+            """, unsafe_allow_html=True)
+    else:
+        cam = st.camera_input("Capture Image")
+        if cam:
+            img = Image.open(cam)
+            st.image(img, use_container_width=True)
+            cls, conf, tip = classify_image(img, model)
+            st.markdown(f"""
+            <div class="result-card">
+                <p class="predicted">{cls.upper()}</p>
+                <p class="confidence">Confidence: {conf:.2f}%</p>
+                <p class="tip">{tip}</p>
+            </div>
+            """, unsafe_allow_html=True)
 
+# ---------------------------
+# CONTACT PAGE
+# ---------------------------
+elif page == "Contact":
+    st.markdown('<h1 class="title">Contact</h1>', unsafe_allow_html=True)
+    st.write("""
+    ### Developer  
+    **Kavibharathi S**
 
+    ### Internship  
+    AICTE – Shell – Edunet Green Skills Internship 🌍
 
-
-
-
-
-
+    ### Project  
+    EcoSort AI — Smart Waste Classification System
+    """)
