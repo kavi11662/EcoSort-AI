@@ -1,20 +1,17 @@
 import streamlit as st
-from utils import navbar
-from utils import global_css
-
-
+from utils import navbar, global_css
 
 st.set_page_config(page_title="About EcoSort", page_icon="♻")
+
 global_css()
 navbar()
 
 st.markdown('<h1 class="title">About EcoSort AI</h1>', unsafe_allow_html=True)
 
 st.write("""
-EcoSort AI is designed to solve the growing challenge of improper waste segregation.
-With increasing landfill pressure and pollution, it is essential to support people with
-a simple, instant waste identification tool.
+EcoSort AI helps solve the problem of improper waste segregation by using AI  
+to instantly classify 10 types of waste and provide the correct disposal method.
 
-EcoSort AI uses deep learning to classify **10 types of waste** and offers **disposal tips**
-for better environmental practices.
+The goal is to support citizens and communities in promoting cleaner environments  
+and reducing landfill burden.
 """)
