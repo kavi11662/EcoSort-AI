@@ -37,7 +37,7 @@ elif option == "Live Camera Feed":
         img = Image.open(cam)
         st.image(img, use_container_width=True)
 
-        cls, conf, tip = classify_image(img, model)
+        cls, conf, tip = classify_image(image=img, model=model)
 
         st.markdown(f"""
         <div class="result-card">
