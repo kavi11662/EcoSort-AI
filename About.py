@@ -1,6 +1,6 @@
 import streamlit as st
 from utils import navbar
-from utils import global_css, navbar
+from utils import global_css
 
 
 
