@@ -8,8 +8,8 @@ st.markdown('<h1 class="title">Features</h1>', unsafe_allow_html=True)
 
 st.write("""
 ### ✅ 10-Class Waste Detection  
-### ✅ Upload Image or Live Camera  
+### ✅ Upload or Live Camera  
 ### ✅ Instant Eco-Friendly Tips  
 ### ✅ HuggingFace Deep Learning Model  
-### ✅ Clean Multi-Page UI  
+### ✅ Beautiful Multi-Page UI  
 """)
