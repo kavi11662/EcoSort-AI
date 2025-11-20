@@ -132,69 +132,36 @@ st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
 # --- APPLY GLOBAL STYLING ---
 global_css()
 
-# --- HERO SECTION ---
+# --- TITLE & SUBTITLE ---
+st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Smart Waste Classification for a Cleaner Planet 🌿</p>', unsafe_allow_html=True)
+
+# --- HOME PAGE CONTENT ---
 st.markdown("""
-<div style="text-align:center; margin-top:50px; padding-bottom:20px;">
-    <h1 class="title" style="margin-bottom:10px;">♻ EcoSort AI</h1>
-    <p class="subtitle" style="font-size:20px; color:#c8f7d4;">
-        Smart Waste Classification for a Cleaner Planet 🌿
+<div style="text-align:center; margin-top:40px;">
+    <h2 style="color:#76ff03;">Your Smart Waste Assistant</h2>
+    <p style="font-size:18px; color:#e8f5e9;">
+        Capture or upload a waste image — EcoSort AI instantly classifies it
+        and gives eco-friendly recycling tips.
     </p>
+    <br>
 </div>
 """, unsafe_allow_html=True)
 
-
-# --- PROFESSIONAL FEATURE / HERO CONTENT ---
-st.markdown("""
-<div style="
-    background: rgba(255,255,255,0.07);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 0 25px rgba(0,255,127,0.15);
-    margin-top: 30px;
-    text-align: center;
-">
-
-    <h2 style="color:#76ff03; margin-bottom:15px; font-size:32px;">
-        Your Smart Waste Assistant
-    </h2>
-
-    <p style="font-size:18px; color:#e8f5e9; line-height:1.6; max-width:700px; margin:auto;">
-        Simply upload or capture a picture of your waste —  
-        <b>EcoSort AI instantly identifies the waste type</b>  
-        and provides <b>eco-friendly recycling and disposal tips</b>  
-        to help you contribute to a greener environment.
-    </p>
-
-</div>
-""", unsafe_allow_html=True)
-
-
-# --- BUTTON SECTION ---
-st.markdown("<br>", unsafe_allow_html=True)
-
-col1, col2, col3 = st.columns([1, 2, 1])
-
-with col2:
-    clicked = st.button(
-        "🚀 Try the Classifier",
-        use_container_width=True,
-        type="primary",
-        help="Open the AI Waste Classifier"
-    )
+# --- BUTTON THAT OPENS CLASSIFIER PAGE ---
+clicked = st.button("Try the Classifier 🚀")
 
 if clicked:
     st.switch_page("pages/3_Classifier.py")
 
-
 # --- FOOTER ---
 st.markdown("""
-<br><br>
-<div style="text-align:center; color:#d0ffd6; font-size:15px; opacity:0.9;">
-Developed by <b>Kavibharathi S</b> • AICTE–Shell–Edunet Internship  
-<br>
-<span style="font-size:14px;">“Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱”</span>
+<div style="text-align:center; margin-top:40px; color:#c8e6c9; font-size:15px;">
+Developed by <b>Kavibharathi S</b><br>
+"Clean surroundings, clear mind — Let’s build a greener tomorrow 🌱"
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
