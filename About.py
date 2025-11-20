@@ -1,8 +1,11 @@
 import streamlit as st
 from utils import navbar
+from utils import global_css, navbar
+
+
 
 st.set_page_config(page_title="About EcoSort", page_icon="♻")
-
+global_css()
 navbar()
 
 st.markdown('<h1 class="title">About EcoSort AI</h1>', unsafe_allow_html=True)
