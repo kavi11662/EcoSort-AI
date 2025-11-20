@@ -5,6 +5,11 @@ st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
 
 # CSS + Navbar
 from utils import navbar
+from utils import global_css
+
+global_css()
+
+
 navbar()
 
 st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
