@@ -141,7 +141,7 @@ st.markdown("""
         and gives eco-friendly recycling tips.
     </p>
     <br>
-    <a href="/Classifier" target="_self">
+    <a href="/3_Classifier.py" target="_self">
         <button style="padding:15px 30px; font-size:20px; background:#76ff03;
                         border-radius:10px; border:none; cursor:pointer;">
             Try the Classifier 🚀
@@ -149,6 +149,7 @@ st.markdown("""
     </a>
 </div>
 """, unsafe_allow_html=True)
+
 
 
 
