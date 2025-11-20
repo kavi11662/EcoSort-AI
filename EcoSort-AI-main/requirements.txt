@@ -1,0 +1,7 @@
+streamlit
+tensorflow
+numpy
+pillow
+opencv-python-headless
+pyttsx3
+huggingface_hub>=0.16.0
