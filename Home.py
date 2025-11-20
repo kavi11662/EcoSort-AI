@@ -1,47 +1,28 @@
 import streamlit as st
-import tensorflow as tf
-import numpy as np
-from huggingface_hub import hf_hub_download
-from PIL import Image
+from utils import *
 
-@st.cache_resource
-def load_model():
-    try:
-        model_path = hf_hub_download(
-            repo_id="kavi11662/ecosort-ai",
-            filename="model/EcoSort_model.h5"
-        )
-        model = tf.keras.models.load_model(model_path)
-        return model
-    except Exception as e:
-        st.error(f"Error loading model: {e}")
-        return None
+st.set_page_config(page_title="EcoSort AI", page_icon="♻", layout="centered")
 
-CLASS_NAMES = [
-    'battery', 'biological', 'cardboard', 'clothes', 'glass',
-    'metal', 'paper', 'plastic', 'shoes', 'trash'
-]
+# CSS + Navbar
+from utils import navbar
+navbar()
 
-ECO_TIPS = {
-    "battery": "Dispose batteries only in certified e-waste bins.",
-    "biological": "Biodegradable waste should be composted.",
-    "cardboard": "Flatten & recycle cardboard boxes.",
-    "clothes": "Donate reusable clothes, recycle torn ones.",
-    "glass": "Recycle at glass centers. Handle broken glass carefully.",
-    "metal": "Metal waste can be sold or recycled.",
-    "paper": "Reuse or recycle clean paper.",
-    "plastic": "Clean & recycle plastics to reduce pollution.",
-    "shoes": "Donate wearable shoes, recycle damaged ones.",
-    "trash": "General waste — avoid mixing recyclables."
-}
+st.markdown('<h1 class="title">♻ EcoSort AI</h1>', unsafe_allow_html=True)
+st.markdown('<p class="subtitle">Smart Waste Classification for a Cleaner Planet 🌿</p>', unsafe_allow_html=True)
 
-def classify_image(model, image):
-    img = image.resize((150, 150))
-    img_array = np.array(img) / 255.0
-    img_array = np.expand_dims(img_array, axis=0)
-
-    predictions = model.predict(img_array)
-    predicted_class = CLASS_NAMES[np.argmax(predictions)]
-    confidence = float(np.max(predictions) * 100)
-
-    return predicted_class, confidence
+st.markdown("""
+<div style="text-align:center; margin-top:50px;">
+    <h2 style="color:#76ff03;">AI-powered Waste Segregation</h2>
+    <p style="font-size:18px; color:#e8f5e9;">
+    Upload an image or take a live picture — EcoSort AI will instantly classify the waste
+    and suggest eco-friendly disposal tips.
+    </p>
+    <br>
+    <a href="/Classifier" target="_self">
+        <button style="padding:15px 30px; font-size:20px; background:#76ff03; 
+                       border-radius:10px; border:none; cursor:pointer;">
+            Try EcoSort AI 🚀
+        </button>
+    </a>
+</div>
+""", unsafe_allow_html=True)
