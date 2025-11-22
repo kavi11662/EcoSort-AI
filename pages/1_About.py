@@ -65,38 +65,6 @@ st.markdown(
     transition: 0.3s;
 }}
 
-.hero-btn:hover {{
-    background-color: #00e676;
-    transform: scale(1.05);
-    box-shadow: 0 0 18px #76ff03;
-}}
-
-.section-title {{
-    font-size: 38px;
-    font-weight: 800;
-    text-align: center;
-    margin-top: 70px;
-    margin-bottom: 10px;
-    color: #76ff03;
-}}
-
-.section-text {{
-    max-width: 900px;
-    margin: auto;
-    text-align: center;
-    line-height: 1.8;
-    font-size: 20px;
-    color: #e8f5e9;
-    padding: 10px 20px;
-}}
-
-.divider {{
-    width: 70%;
-    height: 2px;
-    margin: 45px auto;
-    background: linear-gradient(to right, transparent, #76ff03, transparent);
-}}
-
 </style>
 """,
     unsafe_allow_html=True
