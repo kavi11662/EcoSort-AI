@@ -104,7 +104,7 @@ st.markdown(
 
 # ===== HERO SECTION ======
 st.markdown(
-    """
+    body="""
 <div class="hero-section">
     <h1 class="hero-title">About EcoSort AI</h1>
 
@@ -124,11 +124,11 @@ st.markdown(
 )
 
 # ===== BODY CONTENT ======
-st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
+st.markdown(body="<div class='divider'></div>", unsafe_allow_html=True)
 
-st.markdown("<h2 class='section-title'>Our Mission</h2>", unsafe_allow_html=True)
+st.markdown(body="<h2 class='section-title'>Our Mission</h2>", unsafe_allow_html=True)
 st.markdown(
-    """
+    body="""
 <p class="section-text">
     To make sustainable living effortless by integrating AI into waste management and guiding 
     communities toward a cleaner, greener, and more circular future.
@@ -137,11 +137,11 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
+st.markdown(body="<div class='divider'></div>", unsafe_allow_html=True)
 
-st.markdown("<h2 class='section-title'>Why It Matters</h2>", unsafe_allow_html=True)
+st.markdown(body="<h2 class='section-title'>Why It Matters</h2>", unsafe_allow_html=True)
 st.markdown(
-    """
+    body="""
 <p class="section-text">
     Improper waste segregation leads to:<br><br>
     • Increased landfill overflow<br>
@@ -155,5 +155,3 @@ st.markdown(
 """,
     unsafe_allow_html=True
 )
-
-
