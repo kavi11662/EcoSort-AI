@@ -17,92 +17,105 @@ encoded_bg = get_base64_image(bg_image_path)
 # ---------- CSS ----------
 st.markdown(
     f"""
-    <style>
-    .hero-section {{
-        background-image: url("data:image/png;base64,{encoded_bg}");
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-        padding: 180px 30px;
-        text-align: center;
-        border-radius: 0px;
-        box-shadow: inset 0 0 80px rgba(0,0,0,0.6);
-    }}
+<style>
 
-    .hero-title {{
-        font-size: 55px;
-        font-weight: 900;
-        color: white;
-        text-shadow: 0 0 20px black;
-    }}
+html, body {{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}}
 
-    .hero-desc {{
-        max-width: 900px;
-        margin: auto;
-        font-size: 22px;
-        line-height: 1.7;
-        color: #f1f8e9;
-        text-shadow: 0 0 12px black;
-    }}
+[data-testid="stAppViewContainer"] {{
+    background: linear-gradient(to bottom, #0d1f24, #18363f);
+}}
 
-    .hero-btn {{
-        background-color: #76ff03;
-        color: black;
-        padding: 12px 30px;
-        font-size: 20px;
-        border-radius: 8px;
-        border: none;
-        margin-top: 20px;
-        cursor: pointer;
-        font-weight: bold;
-    }}
+.hero-section {{
+    width: 100%;
+    background-image: url("data:image/png;base64,{encoded_bg}");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 180px 30px;
+    text-align: center;
+    box-shadow: inset 0 0 80px rgba(0,0,0,0.6);
+}}
 
-    .section-title {{
-        font-size: 36px;
-        font-weight: 800;
-        margin-top: 60px;
-        text-align: center;
-        color: #76ff03;
-    }}
+.hero-title {{
+    font-size: 55px;
+    font-weight: 900;
+    color: white;
+    text-shadow: 0 0 20px black;
+}}
 
-    .section-text {{
-        max-width: 900px;
-        margin: auto;
-        font-size: 19px;
-        color: #e8f5e9;
-        text-align: center;
-        line-height: 1.7;
-        padding: 10px 20px;
-    }}
+.hero-desc {{
+    max-width: 900px;
+    margin: auto;
+    font-size: 22px;
+    line-height: 1.7;
+    color: #f1f8e9;
+    text-shadow: 0 0 12px black;
+}}
 
-    .divider {{
-        width: 70%;
-        height: 2px;
-        margin: 40px auto;
-        background: linear-gradient(to right, transparent, #76ff03, transparent);
-    }}
-    </style>
-    """,
+.hero-btn {{
+    background-color: #76ff03;
+    color: black;
+    padding: 12px 30px;
+    font-size: 20px;
+    border-radius: 8px;
+    border: none;
+    margin-top: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}}
+
+.section-title {{
+    font-size: 36px;
+    font-weight: 800;
+    margin-top: 60px;
+    text-align: center;
+    color: #76ff03;
+}}
+
+.section-text {{
+    max-width: 900px;
+    margin: auto;
+    font-size: 19px;
+    color: #e8f5e9;
+    text-align: center;
+    line-height: 1.7;
+    padding: 10px 20px;
+}}
+
+.divider {{
+    width: 70%;
+    height: 2px;
+    margin: 40px auto;
+    background: linear-gradient(to right, transparent, #76ff03, transparent);
+}}
+
+</style>
+""",
     unsafe_allow_html=True
 )
 
 # ---------- HERO SECTION ----------
 st.markdown(
     """
-    <div class="hero-section">
-        <h1 class="hero-title">About EcoSort AI</h1>
-        <p class="hero-desc">
-            EcoSort AI is a next-generation smart waste classification system designed to bring 
-            automation, accuracy, and sustainability into everyday waste management. Powered by 
-            advanced deep learning models, it identifies <b>10 types of waste in real time</b>, 
-            ensuring fast and reliable segregation for homes, institutions, public spaces, and businesses.
-        </p>
+<div class="hero-section">
+    <h1 class="hero-title">About EcoSort AI</h1>
 
-        <a href="/3_Classifier" target="_self">
-            <button class="hero-btn">Try the Classifier 🚀</button>
-        </a>
-    </div>
-    """,
+    <p class="hero-desc">
+        EcoSort AI is a next-generation smart waste classification system designed to bring 
+        automation, accuracy, and sustainability into everyday waste management. Powered by 
+        advanced deep learning models, it identifies <b>10 types of waste in real time</b>, 
+        ensuring fast and reliable segregation for homes, institutions, public spaces, and businesses.
+    </p>
+
+    <a href="/3_Classifier" target="_self">
+        <button class="hero-btn">Try the Classifier 🚀</button>
+    </a>
+</div>
+""",
     unsafe_allow_html=True
 )
 
@@ -112,11 +125,11 @@ st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
 st.markdown("<h2 class='section-title'>Our Mission</h2>", unsafe_allow_html=True)
 st.markdown(
     """
-    <p class='section-text'>
-        To make sustainable living effortless by integrating AI into waste management and guiding 
-        communities toward a cleaner, greener, and more circular future.
-    </p>
-    """,
+<p class='section-text'>
+    To make sustainable living effortless by integrating AI into waste management and guiding 
+    communities toward a cleaner, greener, and more circular future.
+</p>
+""",
     unsafe_allow_html=True
 )
 
@@ -125,17 +138,17 @@ st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
 st.markdown("<h2 class='section-title'>Why It Matters</h2>", unsafe_allow_html=True)
 st.markdown(
     """
-    <p class='section-text'>
-        Improper waste segregation leads to:<br><br>
-        • Increased landfill overflow<br>
-        • Higher pollution levels<br>
-        • Loss of recyclable resources<br>
-        • Heavy strain on municipal systems<br><br>
+<p class='section-text'>
+    Improper waste segregation leads to:<br><br>
+    • Increased landfill overflow<br>
+    • Higher pollution levels<br>
+    • Loss of recyclable resources<br>
+    • Heavy strain on municipal systems<br><br>
 
-        EcoSort AI solves these challenges with <b>real-time waste classification</b> and 
-        <b>eco-friendly disposal recommendations</b> — helping build a smarter and more 
-        sustainable world.
-    </p>
-    """,
+    EcoSort AI solves these challenges with <b>real-time waste classification</b> and 
+    <b>eco-friendly disposal recommendations</b> — helping build a smarter and more 
+    sustainable world.
+</p>
+""",
     unsafe_allow_html=True
 )
