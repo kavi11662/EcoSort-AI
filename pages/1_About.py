@@ -2,74 +2,94 @@ import streamlit as st
 from utils import global_css
 import base64
 
-st.set_page_config(page_title="About EcoSort AI", page_icon="ℹ️")
+st.set_page_config(page_title="About EcoSort AI", page_icon="ℹ️", layout="wide")
 global_css()
 
-# Background image path
+# ===== BACKGROUND IMAGE =====
 bg_image_path = "assets/about_bg.jpg"
 
-# Function to encode image to base64
 def get_base64_image(image_path):
-    with open(image_path, "rb") as img_file:
-        return base64.b64encode(img_file.read()).decode()
+    with open(image_path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
 
-# Convert image to base64
 encoded_bg = get_base64_image(bg_image_path)
 
-# Apply fullscreen background image
+# ===== FULL PAGE BACKGROUND + CONTENT STYLING =====
 st.markdown(
     f"""
     <style>
-    .about-hero {{
-        background-image: url("data:image/jpg;base64,{encoded_bg}");
+
+    /* FULL PAGE BACKGROUND */
+    [data-testid="stAppViewContainer"] {{
+        background: linear-gradient(rgba(0,0,0,0.40), rgba(0,0,0,0.50)),
+        url("data:image/png;base64,{encoded_bg}");
         background-size: cover;
         background-position: center;
+        background-attachment: fixed;
+    }}
+
+    /* HERO SECTION */
+    .about-hero {{
         padding: 180px 20px;
-        border-radius: 0px;
         text-align: center;
         color: white;
     }}
 
     .about-title {{
-        font-size: 50px;
+        font-size: 58px;
         font-weight: 900;
-        text-shadow: 0 0 15px black;
+        text-shadow: 0 0 25px black;
+        margin-bottom: 25px;
     }}
 
     .about-desc {{
-        max-width: 850px;
+        max-width: 950px;
         margin: auto;
-        font-size: 20px;
-        line-height: 1.7;
+        font-size: 22px;
+        line-height: 1.8;
+        color: #e8f5e9;
         text-shadow: 0 0 12px black;
     }}
 
+    /* SECTION HEADINGS */
     .section-title {{
-        font-size: 35px;
+        font-size: 38px;
         font-weight: 800;
-        margin-top: 40px;
-        color: #76ff03;
+        margin-top: 60px;
         text-align: center;
+        color: #76ff03;
     }}
 
+    /* PARAGRAPH TEXT */
     .section-text {{
         max-width: 900px;
         margin: auto;
-        font-size: 19px;
-        line-height: 1.6;
+        font-size: 20px;
         color: #e8f5e9;
+        line-height: 1.8;
         text-align: center;
+        padding: 10px 20px;
     }}
+
+    /* DIVIDER */
+    .divider {{
+        width: 70%;
+        height: 2px;
+        margin: 45px auto;
+        background: linear-gradient(to right, transparent, #76ff03, transparent);
+    }}
+
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# Hero Section
+# =================== HERO SECTION ===================
 st.markdown(
-    f"""
+    """
     <div class="about-hero">
         <h1 class="about-title">About EcoSort AI</h1>
+
         <p class="about-desc">
             EcoSort AI is a next-generation smart waste classification system designed to bring 
             automation, accuracy, and sustainability into everyday waste management.
@@ -81,29 +101,34 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Body Sections
+# =================== BODY CONTENT ===================
+st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
+
 st.markdown("<h2 class='section-title'>Our Mission</h2>", unsafe_allow_html=True)
 st.markdown(
-    "<p class='section-text'>"
-    "To make sustainable living effortless by integrating AI into waste management "
-    "and guiding communities toward a cleaner, greener, and more circular future."
-    "</p>",
+    """
+    <p class="section-text">
+        To make sustainable living effortless by integrating AI into waste management 
+        and guiding communities toward a cleaner, greener, and more circular future.
+    </p>
+    """,
     unsafe_allow_html=True
 )
+
+st.markdown("<div class='divider'></div>", unsafe_allow_html=True)
 
 st.markdown("<h2 class='section-title'>Why It Matters</h2>", unsafe_allow_html=True)
 st.markdown(
     """
-    <p class='section-text'>
-    Improper waste segregation leads to:
-    <br><br>
-    • Increased landfill overflow <br>
-    • Higher pollution levels <br>
-    • Loss of recyclable resources <br>
-    • Strain on municipal systems <br><br>
+    <p class="section-text">
+        Improper waste segregation leads to:<br><br>
+        • Increased landfill overflow <br>
+        • Higher pollution levels <br>
+        • Loss of recyclable resources <br>
+        • Strain on municipal systems <br><br>
 
-    EcoSort AI solves these problems with real-time predictions and simple interactions—helping 
-    build a smarter and more sustainable world.
+        EcoSort AI solves these problems with <b>real-time predictions</b> and 
+        <b>eco-friendly recommendations</b> — helping build a smarter and more sustainable world.
     </p>
     """,
     unsafe_allow_html=True
