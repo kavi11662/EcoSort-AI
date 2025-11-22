@@ -108,7 +108,7 @@ st.markdown(
 <div class="hero-section">
     <h1 class="hero-title">About EcoSort AI</h1>
 
-    <p>
+    <p class="hero-desc">
         EcoSort AI is a next-generation smart waste classification system designed to bring 
         automation, accuracy, and sustainability into everyday waste management. Powered by 
         advanced deep learning models, it identifies <b>10 types of waste in real time</b>, ensuring 
@@ -155,4 +155,5 @@ st.markdown(
 """,
     unsafe_allow_html=True
 )
+
 
