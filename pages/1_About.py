@@ -73,9 +73,6 @@ st.markdown(
 # ===== HERO SECTION ======
 st.markdown(
     body="""
-<div class="hero-section">
-    <h1 class="hero-title">About EcoSort AI</h1>
-
     <p class="hero-desc">
         EcoSort AI is a next-generation smart waste classification system designed to bring 
         automation, accuracy, and sustainability into everyday waste management. Powered by 
@@ -86,10 +83,10 @@ st.markdown(
     <a href="/3_Classifier" target="_self">
         <button class="hero-btn">Try the Classifier 🚀</button>
     </a>
-</div>
-""",
+    """,
     unsafe_allow_html=True
 )
+
 
 # ===== BODY CONTENT ======
 st.markdown(body="<div class='divider'></div>", unsafe_allow_html=True)
@@ -123,3 +120,4 @@ st.markdown(
 """,
     unsafe_allow_html=True
 )
+
